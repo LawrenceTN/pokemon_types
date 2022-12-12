@@ -117,31 +117,34 @@ df = pd.read_json('https://raw.githubusercontent.com/DetainedDeveloper/Pokemon-D
 
 # print((df.iloc[0]['types'][0]['name'])) # prints grass
 # print((df.iloc[0]['types'][1]['name'])) # prints poison
-national_dex = len(df)
-
-# print((df.iloc[4]['types'][0]['name'])) # prints grass
-# print((df.iloc[4]['types'][1]['name'])) # prints poison
 
 # print(df.iloc[i]['name']) # prints pokemon info at index [i]
-
-# print(df.loc[0]['types'][0]['name'])
 
 # ask user for type
 # scan through all pokemon, and display only the ones that have that type along with what they're strong/weak against
 
-for i in range(10):
-    pokemon = df.iloc[i]['name']
-    print(pokemon)
+poke_type = input("Which pokemon type would you like to view: ")
+national_dex = len(df)
+
+for i in range(national_dex):
+
+    # Filter the pokemon
     type_1 = (df.loc[i]['types'][0]['name'])
     try:
         type_2 = (df.loc[i]['types'][1]['name'])
     except:
         type_2 = "none"
-    print("\tType 1: " + type_1)
-    print("\tType 2: " + type_2)
+    
+    poke_types = [type_1, type_2]
 
-    for values, keys in pokemon_types.items():
-        if type_1 or type_2 in pokemon_types.keys():
-            print(f"strong against: {pokemon_types[type_1]['strong']}\n")
-            break
-        
+    if poke_type in poke_types:
+    # Print pokemon stats:     
+        pokemon = df.iloc[i]['name']
+        print(pokemon)
+        print("\tType 1: " + type_1)
+        print("\tType 2: " + type_2)
+
+        for values, keys in pokemon_types.items():
+            if type_1 or type_2 in pokemon_types.keys():
+                print(f"strong against: {pokemon_types[type_1]['strong']}\n")
+                break
