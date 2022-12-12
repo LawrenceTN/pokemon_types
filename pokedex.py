@@ -1,10 +1,7 @@
 import pandas as pd
-import re
 
 # https://github.com/PokeAPI/pokeapi
 # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.update.html
-# https://www.programiz.com/python-programming/nested-dictionary
-
 
 pokemon_types = {
     "fire" : 
@@ -99,16 +96,6 @@ pokemon_types = {
         }
 }
 
-# ans = input("Please enter a pokemon type: ")
-
-# for index, value in pokemon_types.items():
-
-#     #print(index)
-#     #print(f"\t{value['strong']}")
-#     #print(f"\t{value['weak']}")
-#     if ans in value['strong']:
-#         print(f"\n{index} is strong against {ans}")
-
 df = pd.read_json('https://raw.githubusercontent.com/DetainedDeveloper/Pokemon-Data-Scraper/master/pokedex_raw/pokedex_raw.json')
 
 # types = list(df.iloc[1][['types'][0]])
@@ -117,34 +104,45 @@ df = pd.read_json('https://raw.githubusercontent.com/DetainedDeveloper/Pokemon-D
 
 # print((df.iloc[0]['types'][0]['name'])) # prints grass
 # print((df.iloc[0]['types'][1]['name'])) # prints poison
+# print(df.iloc[0]['id']) # prints pokemon info at index [i]
 
-# print(df.iloc[i]['name']) # prints pokemon info at index [i]
+def search():
+    poke_type = ""
+    poke_type = input("Which pokemon type would you like to view: ")
+    national_dex = len(df)
 
-# ask user for type
-# scan through all pokemon, and display only the ones that have that type along with what they're strong/weak against
+    for i in range(national_dex):
+        # Filter the pokemon
+        type_1 = (df.loc[i]['types'][0]['name'])
+        try:
+            type_2 = (df.loc[i]['types'][1]['name'])
+        except:
+            type_2 = "none"
+        poke_types = [type_1, type_2]
 
-poke_type = input("Which pokemon type would you like to view: ")
-national_dex = len(df)
+        if poke_type in poke_types:
+        # Print pokemon stats:     
+            pokemon = df.iloc[i]['name']
+            index = (df.iloc[i]['id'])
+            print(f"#{index}: {pokemon}")
+            print("\tType 1: " + type_1)
+            print("\tType 2: " + type_2)
 
-for i in range(national_dex):
+            for keys in pokemon_types.keys():
+                if type_1 or type_2 in pokemon_types.keys():
+                    print(f"strong against: {pokemon_types[type_1]['strong']}")
+                    print(f"weak against: {pokemon_types[type_1]['weak']}\n")
+                    if type_2 != 'none':
+                        print(f"strong against: {pokemon_types[type_2]['strong']}")
+                        print(f"weak against: {pokemon_types[type_2]['weak']}\n")                    
+                    break
 
-    # Filter the pokemon
-    type_1 = (df.loc[i]['types'][0]['name'])
-    try:
-        type_2 = (df.loc[i]['types'][1]['name'])
-    except:
-        type_2 = "none"
-    
-    poke_types = [type_1, type_2]
+def main():
+    while True:
+        search()
+        answer = input("Press enter to search again or 'q' to quit")
+        if answer == 'q':
+            print("Good-bye!")
+            break
 
-    if poke_type in poke_types:
-    # Print pokemon stats:     
-        pokemon = df.iloc[i]['name']
-        print(pokemon)
-        print("\tType 1: " + type_1)
-        print("\tType 2: " + type_2)
-
-        for values, keys in pokemon_types.items():
-            if type_1 or type_2 in pokemon_types.keys():
-                print(f"strong against: {pokemon_types[type_1]['strong']}\n")
-                break
+main()
